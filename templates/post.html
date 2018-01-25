@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load custom_markdown %}
+{% block style %}
+        <style type="text/css">
+*{
+margin:0;padding:0;
+-webkit-touch-callout: none; /* prevent callout to copy image, etc when tap to hold */
+-webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */
+-webkit-tap-highlight-color: rgba(210,210,210,0.35); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+-webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */
+}
+
+ul,li{list-style:none;}
+.ylcon{width:100%;min-width:320px;}
+.tit{height:26px;line-height:26px;padding:0px 15px;position:relative;font-size:15px;color:#aaa;border-bottom:1px solid rgba(0, 0, 0, 0.15);}
+
+.story{border-bottom:1px dashed #cecece;padding:0 15px 3px;position:relative;}
+.story_t{font-size:0.8em;color:rgba(0,0,0,1);padding-top:5px;padding-bottom:2px;}
+.story_m{color:rgba(110,110,110,1);line-height:21px;word-break:break-all;word-wrap:break-word;overflow:hidden;font-size:0.8em;padding:2px 0;}
+.story_time{color:rgba(154,154,154,1);padding:2px 0;font-size: 0.8em}
+.story_hf{background:rgb(245,245,245);font-size:0.8em;border:1px solid rgba(204,204,204,0.2);border-radius:2px;color:rgba(110,110,110,1);padding:4px;margin-bottom:5px;}
+.opbtn{position:absolute;top: 0;right: 0;}
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="posts">
+        <section class="post">
+            <header class="post-header">
+                <h2 class="post-title">{{ post.title }}</h2>
+
+                    <p class="post-meta">
+                        Time:  <a class="post-author" href="#">{{ post.date_time|date:"Y /m /d"}}</a> <a class="post-category post-category-js" href="#">{{ post.category }}</a>
+                    </p>
+            </header>
+
+                <div class="post-description">
+                    <p>
+                        {{ post.content|custom_markdown }}
+                    </p>
+                </div>
+        </section>
+    </div><!-- /.blog-post -->
+
+    <div class="posts">
+        <p style="font-size: 13px">注册用户可发表评论</p>
+        <form action="{% url "detail" id=post.id %}" method="post">
+            {% csrf_token %}
+            <p><textarea style="width: 300px;height: 100px;font-size: 10px" maxlength="200"  name="c" ></textarea></p>
+            <p><input type="submit" value="提交" style="font-size: 13px"></p>
+        </form>
+    </div>
+
+
+    <div class="ylcon">
+<p class="tit">
+所有留言
+</p>
+<div id="messDivId">
+{% for comment in comments %}
+<div class="story">
+<div class="opbtn"></div>
+<p class="story_t">{{ comment.user_name }}</p>
+<p class="story_time">{{ comment.date_time|date:"Y /m /d  H:i" }}</p>
+<p class="story_hf">{{ comment.content }}</p>
+</div>
+{% endfor %}
+</div>
+</div>
+
+{% endblock %}

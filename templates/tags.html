@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+    {% for post in post_list %}
+        <p><a class="post-category post-category-js" href="{% url "search_tag" tag=post %}">{{ post }}</a></p>
+    {% endfor %}
+
+{% endblock %}
